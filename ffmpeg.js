@@ -5,7 +5,6 @@ var crypto = require('crypto');
 var fs = require('fs');
 var ip = require('ip');
 var spawn = require('child_process').spawn;
-var drive = require('./drive').drive;
 
 module.exports = {
   FFMPEG: FFMPEG
@@ -42,10 +41,6 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
 
   this.pendingSessions = {};
   this.ongoingSessions = {};
-
-  this.uploader = cameraConfig.uploader || false;
-  if ( this.uploader )
-    { this.drive = new drive(); }
 
   var numberOfStreams = ffmpegOpt.maxStreams || 2;
   var videoResolutions = [];
@@ -156,8 +151,6 @@ FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
     self.debug ? self.log(error) : null;
   });
   ffmpeg.on('close', function(code) {
-    if ( this.uploader )
-      { this.drive.storePicture(this.name,imageBuffer); }
     callback(undefined, imageBuffer);
   }.bind(this));
 }
