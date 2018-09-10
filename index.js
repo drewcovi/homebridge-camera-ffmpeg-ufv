@@ -8,7 +8,7 @@ var URL = require('url');
 var qs = require('qs');
 
 var debug = require('debug')('camera-ffmpeg-ufv');
-var UFV = require('./ufv.js').UFV;
+var FFMPEG = require('./ffmpeg.js').FFMPEG;
 var MotionSensorAccessory = require('./lib/motion-sensor-accessory');
 
 var API = require('./lib/util/api');
@@ -191,7 +191,7 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
 
                       debug(JSON.stringify(cameraConfig));
 
-                      var cameraSource = new UFV(hap, cameraConfig);
+                      var cameraSource = new FFMPEG(hap, cameraConfig);
                       cameraAccessory.configureCameraSource(cameraSource);
                       configuredAccessories.push(cameraAccessory);
 
