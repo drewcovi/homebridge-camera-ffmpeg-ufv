@@ -34,7 +34,8 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
   this.fps = ffmpegOpt.maxFPS || 10;
   this.maxBitrate = ffmpegOpt.maxBitrate || 300;
   this.debug = ffmpegOpt.debug;
-  this.additionalCommandline = ffmpegOpt.additionalCommandline || '-tune zerolatency';
+  this.additionalCommandline = ffmpegOpt.additionalCommandline || '';
+  //-tune zerolatency
 
   if (!ffmpegOpt.source) {
     throw new Error("Missing source for camera.");
