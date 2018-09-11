@@ -180,7 +180,7 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
                         "acodec": "copy",
                         "vcodec": "h264_omx",
                         "audio": true,
-                        "debug": self.debug || false
+                        "debug": self.config.debug || false
                       };
 
                       debug('Config: ' + JSON.stringify(videoConfig));
