@@ -305,7 +305,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
         let audioKey = sessionInfo["audio_srtp"];
         let audioSsrc = sessionInfo["audio_ssrc"];
 
-        let ffmpegCommand = this.ffmpegSource + ' -map 0:0' +
+        let ffmpegCommand = '-thread_queue_size 512 '+this.ffmpegSource + ' -map 0:0' +
           ' -vcodec ' + vcodec +
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
@@ -341,8 +341,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             ' -srtp_out_params ' + audioKey.toString('base64') +
             ' srtp://' + targetAddress + ':' + targetAudioPort +
             '?rtcpport=' + targetAudioPort +
-            '&localrtcpport=' + targetAudioPort +
-            '&pkt_size=' + packetsize;
+            '&localrtcpport=' + targetAudioPort;
         }
         console.log(this.debug, ffmpegCommand);
         let ffmpeg = spawn(this.videoProcessor, ffmpegCommand.split(' '), {env: process.env});

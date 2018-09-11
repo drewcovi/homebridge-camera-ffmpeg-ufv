@@ -177,7 +177,7 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
                         "maxWidth": discoveredChannel.width, // or however we end up getting to this!
                         "maxHeight": discoveredChannel.height,
                         "maxFPS": discoveredChannel.fps,
-                        "acodec": "copy",
+                        "acodec": "libfdk_aac",
                         "vcodec": "h264_omx",
                         "audio": true,
                         "debug": self.config.debug || false
