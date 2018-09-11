@@ -51,6 +51,8 @@ ffmpegUfvPlatform.prototype.didFinishLaunching = function() {
 ffmpegUfvPlatform.prototype.accessories = function(callback) {
   var self = this;
 
+  var videoProcessor = self.config.videoProcessor || 'ffmpeg';
+
   if (self.config.nvrs) {
 
     var configuredAccessories = [];
@@ -177,7 +179,8 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
                         "maxFPS": discoveredChannel.fps,
                         "acodec": "copy",
                         "vcodec": "h264_omx",
-                        "audio": true
+                        "audio": true,
+                        "debug": self.debug || false
                       };
 
                       debug('Config: ' + JSON.stringify(videoConfig));
@@ -194,7 +197,7 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
 
                       debug(JSON.stringify(cameraConfig));
 
-                      var cameraSource = new FFMPEG(hap, cameraConfig);
+                      var cameraSource = new FFMPEG(hap, cameraConfig, self.log, videoProcessor);
                       cameraAccessory.configureCameraSource(cameraSource);
                       configuredAccessories.push(cameraAccessory);
 
