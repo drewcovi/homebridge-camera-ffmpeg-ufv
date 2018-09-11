@@ -343,7 +343,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             '&localrtcpport=' + targetAudioPort +
             '&pkt_size=' + packetsize;
         }
-
+        console.log(ffmpegCommand);
         let ffmpeg = spawn(this.videoProcessor, ffmpegCommand.split(' '), {env: process.env});
         this.log("Start streaming video from " + this.name + " with " + width + "x" + height + "@" + vbitrate + "kBit");
         if(this.debug){
