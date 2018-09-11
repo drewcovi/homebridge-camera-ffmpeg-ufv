@@ -328,7 +328,6 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             ' -acodec ' + acodec +
             ' -profile:a aac_eld' +
             ' -flags +global_header' +
-            ' -f null' +
             ' -ar ' + asamplerate + 'k' +
             ' -b:a ' + abitrate + 'k' +
             ' -bufsize ' + abitrate + 'k' +
