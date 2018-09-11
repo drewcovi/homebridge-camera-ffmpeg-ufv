@@ -312,6 +312,8 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           ' -f mp4' +
           ' -vf scale=' + width + ':' + height +
           ' -b:v ' + vbitrate + 'k' +
+          ' -bufsize ' + vbitrate+ 'k' +
+          ' -maxrate '+ vbitrate + 'k' +
           ' -payload_type 99' +
           ' -ssrc ' + videoSsrc +
           ' -f rtp' +
@@ -329,7 +331,6 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             ' -flags +global_header' +
             ' -ar ' + asamplerate + 'k' +
             ' -b:a ' + abitrate + 'k' +
-            ' -bufsize ' + abitrate + 'k' +
             ' -ac 1' +
             ' -payload_type 110' +
             ' -ssrc ' + audioSsrc +
