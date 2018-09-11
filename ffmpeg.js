@@ -1,4 +1,11 @@
 'use strict';
+
+var debug = require('debug')('ffmpeg');
+
+var http = require('http');
+var https = require('https');
+var url = require('url');
+
 var uuid, Service, Characteristic, StreamController;
 
 var crypto = require('crypto');
@@ -136,23 +143,40 @@ FFMPEG.prototype.handleCloseConnection = function(connectionID) {
 }
 
 FFMPEG.prototype.handleSnapshotRequest = function(request, callback) {
-  let resolution = request.width + 'x' + request.height;
-  var imageSource = this.ffmpegImageSource !== undefined ? this.ffmpegImageSource : this.ffmpegSource;
-  let ffmpeg = spawn(this.videoProcessor, (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
-  var imageBuffer = Buffer(0);
-  this.log("Snapshot from " + this.name + " at " + resolution);
-  if(this.debug) console.log('ffmpeg '+imageSource + ' -t 1 -s '+ resolution + ' -f image2 -');
-  ffmpeg.stdout.on('data', function(data) {
-    imageBuffer = Buffer.concat([imageBuffer, data]);
-  });
-  let self = this;
-  ffmpeg.on('error', function(error){
-    self.log("An error occurs while making snapshot request");
-    self.debug ? self.log(error) : null;
-  });
-  ffmpeg.on('close', function(code) {
-    callback(undefined, imageBuffer);
-  }.bind(this));
+
+  if( this.ffmpegImageSource == undefined ) {
+
+    // Default for undefined still image source
+    let resolution = request.width + 'x' + request.height;
+    var imageSource = this.ffmpegSource;
+    let ffmpeg = spawn('ffmpeg', (imageSource + ' -t 1 -s '+ resolution + ' -f image2 -').split(' '), {env: process.env});
+    var imageBuffer = Buffer(0);
+    console.log("Snapshot",imageSource + ' -t 1 -s '+ resolution + ' -f image2 -');
+    ffmpeg.stdout.on('data', function(data) {
+      imageBuffer = Buffer.concat([imageBuffer, data]);
+    });
+    ffmpeg.on('close', function(code) {
+      callback(undefined, imageBuffer);
+    }.bind(this));
+
+  } else {
+
+    // Image source defined. Parse the URL and add the option to ignore cert errors:
+    var imageSource = url.parse(this.ffmpegImageSource);
+    var options = Object.assign(imageSource, {rejectUnauthorized: false}); // suppressing the self-signed certificate error
+
+    (options.protocol == 'https:' ? https : http).get(options, function(res) {
+      var data = [];
+
+      res.on('data', function(chunk) {
+        data.push(chunk);
+      }).on('end', function() {
+        var buffer = Buffer.concat(data);
+        debug('returning image');
+        callback(undefined, buffer);
+      });
+    });
+  }
 }
 
 FFMPEG.prototype.prepareStream = function(request, callback) {
