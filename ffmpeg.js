@@ -23,7 +23,7 @@ function FFMPEG(hap, cameraConfig, log, videoProcessor) {
   Characteristic = hap.Characteristic;
   StreamController = hap.StreamController;
   this.log = log;
-
+  debug(cameraConfig);
   var ffmpegOpt = cameraConfig.videoConfig;
   this.name = cameraConfig.name;
   this.vcodec = ffmpegOpt.vcodec;
@@ -343,7 +343,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             '&localrtcpport=' + targetAudioPort +
             '&pkt_size=' + packetsize;
         }
-        console.log(ffmpegCommand);
+        console.log(this.debug, ffmpegCommand);
         let ffmpeg = spawn(this.videoProcessor, ffmpegCommand.split(' '), {env: process.env});
         this.log("Start streaming video from " + this.name + " with " + width + "x" + height + "@" + vbitrate + "kBit");
         if(this.debug){
