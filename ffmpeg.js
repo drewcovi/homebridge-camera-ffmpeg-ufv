@@ -331,6 +331,8 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
             ' -flags +global_header' +
             ' -ar ' + asamplerate + 'k' +
             ' -b:a ' + abitrate + 'k' +
+            ' -bufsize ' + abitrate + 'k' +
+            ' -maxrate ' + abitrate + 'k' +
             ' -ac 1' +
             ' -payload_type 110' +
             ' -ssrc ' + audioSsrc +
