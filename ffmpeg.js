@@ -357,7 +357,7 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           if(this.debug){
             console.log(data.toString());
           }
-        }).bind(this);
+        }.bind(this));
         let self = this;
         ffmpeg.on('error', function(error){
             self.log("An error occurs while making stream request");
