@@ -179,7 +179,6 @@ ffmpegUfvPlatform.prototype.accessories = function(callback) {
                         "maxFPS": discoveredChannel.fps,
                         "acodec": "libfdk_aac",
                         "vcodec": "h264_omx",
-                        "maxBitrate": 1000,
                         "audio": true,
                         "debug": self.config.debug || false
                       };
