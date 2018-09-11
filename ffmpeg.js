@@ -310,7 +310,6 @@ FFMPEG.prototype.handleStreamRequest = function(request) {
           ' -pix_fmt yuv420p' +
           ' -r ' + fps +
           ' -f mp4' +
-          ' ' + additionalCommandline +
           ' -vf scale=' + width + ':' + height +
           ' -b:v ' + vbitrate + 'k' +
           ' -bufsize ' + vbitrate+ 'k' +
